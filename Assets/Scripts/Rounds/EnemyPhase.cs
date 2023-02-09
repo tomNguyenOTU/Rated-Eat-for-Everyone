@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyPhase : MonoBehaviour
 {
+    public PlayerPhase player;
     public Waves waves;
     public GameObject prefab;
 
@@ -55,6 +56,7 @@ public class EnemyPhase : MonoBehaviour
     {
         enemyPhase = false;
         liveEnemyCount = 0;
+        player.StartPhase();
     }
 
     public void KillPhase()
@@ -63,6 +65,11 @@ public class EnemyPhase : MonoBehaviour
         // Removes all active enemies from field
 
         StopCoroutine("spawnWave");
+        GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in Enemies)
+        {
+            Destroy(enemy);
+        }
         EndPhase();
     }
 }
