@@ -60,6 +60,11 @@ public class TowerPlacement : MonoBehaviour
         return Physics2D.Raycast(GetMousePosition(), Vector2.zero, 0.1f, mask, -100f, 100f);
     }
 
+    public RaycastHit2D RaycastMouseToMask(LayerMask mask, Vector2 offset)
+    {
+        return Physics2D.Raycast(GetMousePosition() + offset, Vector2.zero, 0.1f, mask, -100f, 100f);
+    }
+
     public void ProjectTowerForBuilding(Tower tower)
     {
         // yes i know shut up this is easier for me to read
@@ -154,18 +159,37 @@ public class TowerPlacement : MonoBehaviour
             towerProjection = null;
         }
     }
-    
+
     public bool CheckForTower()
     {
-        RaycastHit2D hit = RaycastMouseToMask(towerMask);
+        //Vector2[] offsets = new Vector2[4];
+        //RaycastHit2D[] hit = new RaycastHit2D[4];
 
-        if (hit.collider == null)
-            return false;
-        else
+        //for (int i = 0; i < 2; i++)
+        //{
+
+        //}
+
+        BoxCollider2D projectionHitbox = towerProjection.GetComponent<BoxCollider2D>();
+        bool projectionTouchingTower = projectionHitbox.IsTouchingLayers(towerMask);
+
+        // RaycastHit2D hit = RaycastMouseToMask(towerMask, ProjectionOffset(_tower));
+
+        //    if (hit.collider == null)
+        //        return false;
+        //    else
+        //    {
+        //        Debug.Log("tower in projection location");
+        //        return true;
+        //    }
+
+        if (projectionTouchingTower)
         {
             Debug.Log("tower in projection location");
             return true;
         }
+        else
+            return false;
     }
 
     public void BuildTower()
