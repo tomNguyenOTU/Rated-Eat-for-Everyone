@@ -11,12 +11,14 @@ public class Tower : MonoBehaviour
     [SerializeField] private float range;
 
     [SerializeField] private int cost;
+    [SerializeField] private float[] buildTimer;
 
     [SerializeField] private int width;
 
     // used as reference
     private float maxHealth;
     private float normalCooldown;
+    private float currentBuildTimer;
 
     // components of tower
     private Transform _trans;

@@ -7,7 +7,8 @@ public class TowerPlacement : MonoBehaviour
 {
     public GameObject towerPrefab;
     public GameObject towerProjection;
-    public LayerMask layerMask;
+    public LayerMask gridMask;
+    public LayerMask towerMask;
 
     private GameObject hoveredTile;
 
@@ -22,21 +23,41 @@ public class TowerPlacement : MonoBehaviour
 
     private void Start()
     {
-        BuildMode(true);
-
         _tower = towerPrefab.GetComponent<Tower>();
     }
 
     private void Update()
     {
-        UpdateHoverTile();
+        // placeholder testing stuffs i dunno
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE
+            if (building)
+                BuildMode(false);
+            else
+                BuildMode(true);
+        }
 
-        ProjectTowerForBuilding(_tower);
+        if (building)
+        {
+            UpdateHoverTile();
+            ProjectTowerForBuilding(_tower);
+
+            if (Input.GetMouseButton(0))
+            {
+                BuildTower();
+            }
+        }
     }
 
     public Vector2 GetMousePosition()
     {
         return _cam.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    public RaycastHit2D RaycastMouseToMask(LayerMask mask)
+    {
+        return Physics2D.Raycast(GetMousePosition(), Vector2.zero, 0.1f, mask, -100f, 100f);
     }
 
     public void ProjectTowerForBuilding(Tower tower)
@@ -76,7 +97,7 @@ public class TowerPlacement : MonoBehaviour
 
     public void UpdateHoverTile()
     {
-        RaycastHit2D hit = Physics2D.Raycast(GetMousePosition(), Vector2.zero, 0.1f, layerMask, -100f, 100f);
+        RaycastHit2D hit = RaycastMouseToMask(gridMask);
 
         // no hovered tiles
         if (hit.collider == null)
@@ -117,16 +138,53 @@ public class TowerPlacement : MonoBehaviour
     {
         this.building = building;
 
-        // end if turning off the build mode
+        if (building)
+        {
+            towerProjection = Instantiate(towerPrefab, _trans);
+
+            // makes the projection not a real tower
+            if (towerProjection.GetComponent<Tower>() != null)
+            {
+                Destroy(towerProjection.GetComponent<Tower>());
+            }
+        }
+        else 
+        {
+            Destroy(towerProjection);
+            towerProjection = null;
+        }
+    }
+    
+    public bool CheckForTower()
+    {
+        RaycastHit2D hit = RaycastMouseToMask(towerMask);
+
+        if (hit.collider == null)
+            return false;
+        else
+        {
+            Debug.Log("tower in projection location");
+            return true;
+        }
+    }
+
+    public void BuildTower()
+    {
+        // if in build mode, hovering over a tile, and there is no tower
         if (!building)
             return;
 
-        towerProjection = Instantiate(towerPrefab, _trans);
+        if (hoveredTile == null)
+            return;
 
-        // i think this removes a component
-        if (towerProjection.GetComponent<Tower>() != null)
-        {
-            Destroy(towerProjection.GetComponent<Tower>());
-        }
+        if (CheckForTower())
+            return;
+
+        // build the tower
+        GameObject newTowerObject = Instantiate(towerPrefab, towerProjection.transform.position, Quaternion.identity, _trans);
+        newTowerObject.layer = 6;
+
+        // run this if the tower is actually built; destroys the projection
+        BuildMode(false);
     }
 }
