@@ -14,6 +14,7 @@ public class MapGenerator : MonoBehaviour
 
     private Transform _trans;
     private List<GameObject> mapTiles = new List<GameObject>();
+    private List<Vector3> mapTileCoordinates = new List<Vector3>();
 
     private void Start()
     {
@@ -30,10 +31,16 @@ public class MapGenerator : MonoBehaviour
                 // this could be condensed into one line but readability
                 float x = mapOffsetX + i * tileWidth;
                 float y = mapOffsetY + j * tileWidth;
-                Vector3 maptilePosition = new Vector3(x, y, 0);
+                Vector3 mapTilePosition = new Vector3(x, y, 0);
 
-                GameObject newTile = Instantiate(mapTile, maptilePosition, Quaternion.identity, _trans);
+                // this can be expanded into two lines by just setting the position in another line but idk lmao
+                GameObject newTile = Instantiate(mapTile, mapTilePosition, Quaternion.identity, _trans);
+                newTile.transform.localScale = new Vector3(tileWidth, tileWidth, tileWidth);
                 mapTiles.Add(newTile);
+
+                // set the coordinates of the tile
+                Vector3 mapTileCoordinates = new Vector3 (i, j, 0);
+                this.mapTileCoordinates.Add(mapTileCoordinates);
             }
         }
     }
@@ -41,5 +48,30 @@ public class MapGenerator : MonoBehaviour
     public List<GameObject> GetMapTiles()
     {
         return mapTiles;
+    }
+
+    public List<Vector3> GetMapTileCoordinates()
+    {
+        return mapTileCoordinates;
+    }
+
+    public float GetTileWidth()
+    {
+        return tileWidth;
+    }
+
+    public Vector2 GetMapCoordinates()
+    {
+        return new Vector2(mapWidth, mapHeight);
+    }
+
+    public int GetMapWidth()
+    {
+        return mapWidth;
+    }
+
+    public int GetMapHeight()
+    {
+        return mapHeight;
     }
 }

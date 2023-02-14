@@ -18,26 +18,20 @@ public class TowerPlacement : MonoBehaviour
 
     private Transform _trans;
 
+    private Tower _tower;
+
     private void Start()
     {
         BuildMode(true);
+
+        _tower = towerPrefab.GetComponent<Tower>();
     }
 
     private void Update()
     {
-        if (building)
-        {
-            if (towerProjection != null)
-            {
-                UpdateHoverTile();
-                
-                // gridsnap
-                if (hoveredTile != null)
-                {
-                    towerProjection.transform.position = hoveredTile.transform.position;
-                }
-            }
-        }
+        UpdateHoverTile();
+
+        ProjectTowerForBuilding(_tower);
     }
 
     public Vector2 GetMousePosition()
@@ -45,20 +39,78 @@ public class TowerPlacement : MonoBehaviour
         return _cam.ScreenToWorldPoint(Input.mousePosition);
     }
 
+    public void ProjectTowerForBuilding(Tower tower)
+    {
+        // yes i know shut up this is easier for me to read
+
+        // checks if the projection needs to be updated
+        if (!building)
+            return;
+
+        if (towerProjection == null)
+            return;
+
+        if (hoveredTile == null)
+            return;
+
+        // pseudocode stuff:
+        // find the coordinates of the hovered tile
+        // add the width of the tower (a, a) to the coordinates (x, y)
+        // check if the new coordinates are outside of the grid dimensions (i, j)
+
+        // check if the projection would be out of bounds
+        int tileIndex = _map.GetMapTiles().IndexOf(hoveredTile);
+        Vector3 tileCoordinates = _map.GetMapTileCoordinates()[tileIndex];
+        Debug.Log(tileCoordinates);
+
+        tileCoordinates += new Vector3(tower.GetWidth(), tower.GetWidth(), 0);
+
+        Vector3 gridDimensions = new Vector3(_map.GetMapWidth(), _map.GetMapHeight(), 0);
+
+        if (tileCoordinates.x > gridDimensions.x || tileCoordinates.y > gridDimensions.y)
+            return;
+
+        // update the projection
+        towerProjection.transform.position = hoveredTile.transform.position + ProjectionOffset(tower);
+    }
+
     public void UpdateHoverTile()
     {
-        Vector2 mousePosition = GetMousePosition();
+        RaycastHit2D hit = Physics2D.Raycast(GetMousePosition(), Vector2.zero, 0.1f, layerMask, -100f, 100f);
 
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, 0.1f, layerMask, -100, 100);
-
-        // no hovered tile
+        // no hovered tiles
         if (hit.collider == null)
+        {
+            Debug.Log("no collider found at mouse position"); 
             return;
+        }
 
         if (_map.GetMapTiles().Contains(hit.collider.gameObject))
         {
             hoveredTile = hit.collider.gameObject;
         }
+    }
+
+    public Vector3 ProjectionOffset(Tower tower)
+    {
+        float baseOffset = _map.GetTileWidth();
+        int towerWidth = _tower.GetWidth();
+
+        float adjustedOffset;
+
+        if (towerWidth <= 1)
+        {
+            return Vector3.zero;
+        }
+        else
+        {
+            adjustedOffset = baseOffset / (float)towerWidth;
+        }
+
+        Vector3 offset = new Vector3(adjustedOffset, adjustedOffset);
+        Debug.Log($"{baseOffset} / {towerWidth} = {adjustedOffset}");
+
+        return offset;
     }
 
     public void BuildMode(bool building) // do not run in Update() kthanks

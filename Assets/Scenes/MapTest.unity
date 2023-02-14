@@ -263,7 +263,7 @@ MonoBehaviour:
   towerProjection: {fileID: 839382265085706877, guid: 0f95316292f9ef04799d9806d8c0da87, type: 3}
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   _cam: {fileID: 1113982989}
   _map: {fileID: 2091704068}
 --- !u!1 &2091704067
@@ -276,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2091704069}
   - component: {fileID: 2091704068}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Map Creator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,8 +299,8 @@ MonoBehaviour:
   mapWidth: 20
   mapHeight: 13
   tileWidth: 0.75
-  mapOffsetX: -6.25
-  mapOffsetY: -4.65
+  mapOffsetX: -6.35
+  mapOffsetY: -4.55
 --- !u!4 &2091704069
 Transform:
   m_ObjectHideFlags: 0

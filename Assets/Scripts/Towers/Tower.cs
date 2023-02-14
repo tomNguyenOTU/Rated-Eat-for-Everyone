@@ -12,7 +12,7 @@ public class Tower : MonoBehaviour
 
     [SerializeField] private int cost;
 
-    int width;
+    [SerializeField] private int width;
 
     // used as reference
     private float maxHealth;
@@ -63,17 +63,18 @@ public class Tower : MonoBehaviour
     //    // some of this might just be easier if i have a universal enemy class tbh
     //}   
 
+    // whoops
     // checks if the tower can attack:
     // if the difference between realtime and last attack time is greater than cooldown, then the tower can attack
-    public bool CanAttack()
-    {
-        if (Time.realtimeSinceStartup - lastAttackTime > cooldown) 
-        {
-            return true;
-        }
+    //public bool CanAttack()
+    //{
+    //    if (Time.realtimeSinceStartup - lastAttackTime > cooldown) 
+    //    {
+    //        return true;
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
     // helper functions go here
     public float GetHealth()
@@ -139,5 +140,10 @@ public class Tower : MonoBehaviour
         {
             upgradeTier++;
         }
+    }
+
+    public int GetWidth()
+    {
+        return width;
     }
 }

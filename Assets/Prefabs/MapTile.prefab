@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8750697878044343335}
   - component: {fileID: 8324339174970725268}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 316741597763980279}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1556261392534252081}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2400018027679434976}
   - component: {fileID: 2341147322178453005}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 6015448132505626169}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1556261392534252081}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556261392534252081}
   - component: {fileID: 6683748747687289280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MapTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
