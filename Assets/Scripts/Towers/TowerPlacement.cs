@@ -45,7 +45,7 @@ public class TowerPlacement : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
-                BuildTower();
+                BuildTower(_tower);
             }
         }
     }
@@ -87,7 +87,7 @@ public class TowerPlacement : MonoBehaviour
         // check if the projection would be out of bounds
         int tileIndex = _map.GetMapTiles().IndexOf(hoveredTile);
         Vector3 tileCoordinates = _map.GetMapTileCoordinates()[tileIndex];
-        Debug.Log(tileCoordinates);
+        // Debug.Log(tileCoordinates);
 
         tileCoordinates += new Vector3(tower.GetWidth(), tower.GetWidth(), 0);
 
@@ -106,6 +106,7 @@ public class TowerPlacement : MonoBehaviour
 
         // no hovered tiles
         if (hit.collider == null)
+
         {
             Debug.Log("no collider found at mouse position"); 
             return;
@@ -160,39 +161,56 @@ public class TowerPlacement : MonoBehaviour
         }
     }
 
-    public bool CheckForTower()
+    public bool CheckForTower(Tower tower)
     {
-        //Vector2[] offsets = new Vector2[4];
-        //RaycastHit2D[] hit = new RaycastHit2D[4];
+        float tileWidth = _map.GetTileWidth();
+        int towerWidth = tower.GetWidth();
 
-        //for (int i = 0; i < 2; i++)
-        //{
+        float baseOffset = tileWidth * (towerWidth - 1);
 
-        //}
+        Vector2[] offsets = new Vector2[4];
+        RaycastHit2D[] hit = new RaycastHit2D[4];
 
-        BoxCollider2D projectionHitbox = towerProjection.GetComponent<BoxCollider2D>();
-        bool projectionTouchingTower = projectionHitbox.IsTouchingLayers(towerMask);
-
-        // RaycastHit2D hit = RaycastMouseToMask(towerMask, ProjectionOffset(_tower));
-
-        //    if (hit.collider == null)
-        //        return false;
-        //    else
-        //    {
-        //        Debug.Log("tower in projection location");
-        //        return true;
-        //    }
-
-        if (projectionTouchingTower)
-        {
-            Debug.Log("tower in projection location");
-            return true;
+        for (int i = 0; i < 2; i++)
+        { 
+            for (int j = 0; j < 2; j++)
+            {
+                // binary trick; there's probably a better solution but i like this one
+                offsets[i*2 + j] = new Vector2(baseOffset * i, baseOffset * j);
+                hit[i*2 + j] = RaycastMouseToMask(towerMask, offsets[i*2 + j]);
+            }
         }
-        else
-            return false;
+
+        for (int i = 0; i < hit.Length; i++)
+        {
+            if (hit[i].collider != null)
+            {
+                Debug.Log("tower in projection location");
+                return true;
+            }
+        }
+
+        Debug.Log("no tower in projection location");
+        return false;
+
+
+        // alternate solution involving colliders
+        //BoxCollider2D projectionHitbox = towerProjection.GetComponent<BoxCollider2D>();
+        //bool projectionTouchingTower = projectionHitbox.IsTouchingLayers(towerMask);
+
+        //if (projectionTouchingTower)
+        //{
+        //    Debug.Log("tower in projection location");
+        //    return true;
+        //}
+        //else
+        //{
+        //    Debug.Log("no tower in projection location");
+        //    return false;
+        //}
     }
 
-    public void BuildTower()
+    public void BuildTower(Tower tower)
     {
         // if in build mode, hovering over a tile, and there is no tower
         if (!building)
@@ -201,7 +219,7 @@ public class TowerPlacement : MonoBehaviour
         if (hoveredTile == null)
             return;
 
-        if (CheckForTower())
+        if (CheckForTower(tower))
             return;
 
         // build the tower

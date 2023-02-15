@@ -24,7 +24,7 @@ public class Tower : MonoBehaviour
     private Transform _trans;
 
     // other
-    private float lastAttackTime = Time.realtimeSinceStartup;
+    // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
 
     void Start()
@@ -63,14 +63,14 @@ public class Tower : MonoBehaviour
     //    return enemies;
 
     //    // some of this might just be easier if i have a universal enemy class tbh
-    //}   
+    //}
 
-    // whoops
-    // checks if the tower can attack:
+    //whoops
+    //checks if the tower can attack:
     // if the difference between realtime and last attack time is greater than cooldown, then the tower can attack
     //public bool CanAttack()
     //{
-    //    if (Time.realtimeSinceStartup - lastAttackTime > cooldown) 
+    //    if (Time.realtimeSinceStartup - lastAttackTime > cooldown)
     //    {
     //        return true;
     //    }
@@ -133,7 +133,7 @@ public class Tower : MonoBehaviour
 
     public void SetLastAttack(float time)
     {
-        lastAttackTime = time;
+        // lastAttackTime = time;
     }
 
     public void UpgradeTower()
