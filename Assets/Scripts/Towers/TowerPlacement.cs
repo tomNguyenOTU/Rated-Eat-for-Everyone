@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerPlacement : MonoBehaviour
 {
@@ -29,25 +30,38 @@ public class TowerPlacement : MonoBehaviour
     private void Update()
     {
         // placeholder testing stuffs i dunno
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE
-            if (building)
-                BuildMode(false);
-            else
-                BuildMode(true);
-        }
 
-        if (building)
-        {
-            UpdateHoverTile();
-            ProjectTowerForBuilding(_tower);
+        // commented out so i can send this to a manager script 
 
-            if (Input.GetMouseButton(0))
-            {
-                BuildTower(_tower);
-            }
-        }
+        //if (building)
+        //{
+        //    UpdateHoverTile();
+        //    ProjectTowerForBuilding(_tower);
+
+        //    if (Input.GetMouseButtonUp(0))
+        //    {
+        //        if (hoveredTile != null)
+        //        {
+        //            BuildTower(_tower);
+        //        }
+
+        //        BuildMode(false);
+        //    }
+
+        //    if (Input.GetKeyDown(KeyCode.Escape))
+        //    {
+        //        BuildMode(false);
+        //    }
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    // PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE
+        //    if (building)
+        //        BuildMode(false);
+        //    else
+        //        BuildMode(true);
+        //}
     }
 
     public Vector2 GetMousePosition()
@@ -106,9 +120,9 @@ public class TowerPlacement : MonoBehaviour
 
         // no hovered tiles
         if (hit.collider == null)
-
         {
-            Debug.Log("no collider found at mouse position"); 
+            Debug.Log("no collider found at mouse position");
+            hoveredTile = null;
             return;
         }
 
@@ -142,11 +156,14 @@ public class TowerPlacement : MonoBehaviour
 
     public void BuildMode(bool building) // do not run in Update() kthanks
     {
+        if (this.building == building)
+            return;
+
         this.building = building;
 
         if (building)
         {
-            towerProjection = Instantiate(towerPrefab, _trans);
+            towerProjection = Instantiate(towerPrefab, new Vector3(-40, 40, 0), Quaternion.identity, _trans);
 
             // makes the projection not a real tower
             if (towerProjection.GetComponent<Tower>() != null)
@@ -226,7 +243,17 @@ public class TowerPlacement : MonoBehaviour
         GameObject newTowerObject = Instantiate(towerPrefab, towerProjection.transform.position, Quaternion.identity, _trans);
         newTowerObject.layer = 6;
 
-        // run this if the tower is actually built; destroys the projection
-        BuildMode(false);
+        // destroy the projection
+        // BuildMode(false);
+    }
+    
+    public bool GetBuildMode()
+    {
+        return building;
+    }
+
+    public Tower GetTower()
+    {
+        return _tower;
     }
 }

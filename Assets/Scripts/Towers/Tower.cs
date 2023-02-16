@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TowerTags
+{
+    Blueberry,
+    Watermelon
+}
+
 public class Tower : MonoBehaviour
 {
     // tower stats
@@ -14,6 +20,8 @@ public class Tower : MonoBehaviour
     [SerializeField] private float[] buildTimer;
 
     [SerializeField] private int width;
+
+    [SerializeField] private List<TowerTags> tags;
 
     // used as reference
     private float maxHealth;
@@ -147,5 +155,18 @@ public class Tower : MonoBehaviour
     public int GetWidth()
     {
         return width;
+    }
+
+    public List<TowerTags> GetTowerTag()
+    {
+        return tags;
+    }
+
+    public bool CheckIfTagsHas(TowerTags tag)
+    {
+        if (tags.Contains(tag))
+            return true;
+
+        return false;
     }
 }
