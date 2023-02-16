@@ -30,14 +30,18 @@ public class Tower : MonoBehaviour
 
     // components of tower
     private Transform _trans;
+    private UtilityDistComparison _dist;
 
     // other
+    private GameObject _enemyTarget;
+
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
 
     void Start()
     {
         _trans = GetComponent<Transform>();
+        _dist = GetComponent<UtilityDistComparison>();
     }
 
     void Update()
@@ -45,33 +49,33 @@ public class Tower : MonoBehaviour
         
     }
 
-    // pseudocode for now, uncomment when testing this out or something
-    //public List<GameObject> findEnemiesInRange(bool canHitFlying)
-    //{
-    //    List<GameObject> enemies = new List<GameObject>();
+    private void Attack()
+    {
 
-    //    //selfnote for later: consider this solution for tags: https://answers.unity.com/questions/1470694/multiple-tags-for-one-gameobject.html
+    }
 
-    //    enemies.Add(GameObject.FindGameObjectsWithTag("Enemy"));
-    //    if (canHitFlying)
-    //    {
-    //        enemies.Add(GameObject.FindGameObjectsWithTag("Flying"));
-    //    }
+    //pseudocode for now, uncomment when testing this out or something
+    public void UpdateTowerTarget()
+    {
+        List<GameObject> enemies = new List<GameObject>(); // grab a list of enemies from a manager script somewhere; this line is a placeholder
 
-    //    for (int i = enemies.Count; i > 0; i--)
-    //    {
-    //        Transform enemyTransform = GetComponent<Transform>(enemies[i]);
+        //selfnote for later: consider this solution for tags: https://answers.unity.com/questions/1470694/multiple-tags-for-one-gameobject.html
+    
+        enemies = _dist.CheckDistance(enemies, range); // remove all enemies not in range
 
-    //        if (Vector3.Distance(_trans.position, enemyTransform.position) > range)
-    //        {
-    //            enemies.RemoveAt(i);
-    //        }
-    //    }
+        if (enemies.Count == 0)
+        {
+            _enemyTarget = null;
+            return;
+        }
 
-    //    return enemies;
+        List<GameObject> temp = new List<GameObject>();
 
-    //    // some of this might just be easier if i have a universal enemy class tbh
-    //}
+        // (this should be the last thing checked, but i need to pass this onto luc because i need enemy class stuff later)
+        // find closest enemy to tower
+        List<Transform> targets = _dist.ConvertObjToTrans(enemies);
+        _enemyTarget = enemies[_dist.CheckDistance(targets)];
+    }
 
     //whoops
     //checks if the tower can attack:

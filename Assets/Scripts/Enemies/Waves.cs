@@ -8,6 +8,8 @@ public class Waves : MonoBehaviour
     public Camera cam;
     public bool routineRun = false;
 
+    private List<GameObject> enemies = new List<GameObject>();
+
     public IEnumerator spawnWave(string spawnDirection, float spawnCooldown, GameObject enemyType, int enemyCount)
     {
         routineRun = true;
