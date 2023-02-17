@@ -34,6 +34,7 @@ public class Tower : MonoBehaviour
 
     // other
     private GameObject _enemyTarget;
+    private bool canAttack = true;
 
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
@@ -50,12 +51,27 @@ public class Tower : MonoBehaviour
 
     void Update()
     {
-        
+        if (_enemyTarget != null && canAttack == true)
+        {
+            StartCoroutine(Attack());
+        }
     }
 
-    private void Attack()
+    IEnumerator Attack()
     {
+        canAttack = false;
 
+        EnemyStats targetStats = _enemyTarget.GetComponent<EnemyStats>();
+        targetStats.SetHitPoints(targetStats.GetHitPoints() - damage);
+
+        if (targetStats.GetHitPoints() <= 0) 
+        {
+            _enemyTarget.Die();
+            _enemyTarget = null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        canAttack = true;
     }
 
     //pseudocode for now, uncomment when testing this out or something

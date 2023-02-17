@@ -8,4 +8,14 @@ public class EnemyStats : MonoBehaviour
     public float atkDamage;
     public float atkDelay;
     public float moveSpeed;
+
+    public float GetHitPoints()
+    {
+        return hitPoints;
+    }
+
+    public void SetHitPoints(float hitPoints)
+    {
+        this.hitPoints = hitPoints;
+    }
 }
