@@ -11,9 +11,9 @@ public enum TowerTags
 public class Tower : MonoBehaviour
 {
     // tower stats
-    public float health;
-    float damage;
-    float cooldown;
+    private float health;
+    private float damage;
+    private float cooldown;
     [SerializeField] private float range;
 
     [SerializeField] private int cost;
@@ -31,13 +31,17 @@ public class Tower : MonoBehaviour
     // components of tower
     private Transform _trans;
     private UtilityDistComparison _dist;
+    private CircleCollider2D _rangeTrigger;
 
     // other
-    private GameObject _enemyTarget;
+    [SerializeField] private GameObject _enemyTarget;
+    List<GameObject> _enemiesInRange = new List<GameObject>();
     private bool canAttack = true;
 
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
+
+
 
     void Start()
     {
@@ -47,6 +51,8 @@ public class Tower : MonoBehaviour
         health = GetComponent<TowerStats>().hitPoints;
         damage = GetComponent<TowerStats>().atkDamage;
         cooldown = GetComponent<TowerStats>().atkDelay;
+
+        _rangeTrigger.radius = range; // uhhh this one doesn't work fuck i'll fix it later
     }
 
     void Update()
@@ -54,6 +60,26 @@ public class Tower : MonoBehaviour
         if (_enemyTarget != null && canAttack == true)
         {
             StartCoroutine(Attack());
+        }
+        else if (_enemyTarget == null)
+        {
+            UpdateTowerTarget();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            _enemiesInRange.Add(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            _enemiesInRange.Remove(collision.gameObject);
         }
     }
 
@@ -66,24 +92,19 @@ public class Tower : MonoBehaviour
 
         if (targetStats.GetHitPoints() <= 0) 
         {
-            _enemyTarget.Die();
+            // _enemyTarget.Die();
+            Destroy(_enemyTarget);
             _enemyTarget = null;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(cooldown);
         canAttack = true;
     }
 
     //pseudocode for now, uncomment when testing this out or something
     public void UpdateTowerTarget()
     {
-        List<GameObject> enemies = new List<GameObject>(); // grab a list of enemies from a manager script somewhere; this line is a placeholder
-
-        //selfnote for later: consider this solution for tags: https://answers.unity.com/questions/1470694/multiple-tags-for-one-gameobject.html
-    
-        enemies = _dist.CheckDistance(enemies, range); // remove all enemies not in range
-
-        if (enemies.Count == 0)
+        if (_enemiesInRange.Count == 0)
         {
             _enemyTarget = null;
             return;
@@ -93,8 +114,8 @@ public class Tower : MonoBehaviour
 
         // (this should be the last thing checked, but i need to pass this onto luc because i need enemy class stuff later)
         // find closest enemy to tower
-        List<Transform> targets = _dist.ConvertObjToTrans(enemies);
-        _enemyTarget = enemies[_dist.CheckDistance(targets)];
+        List<Transform> targets = _dist.ConvertObjToTrans(_enemiesInRange);
+        _enemyTarget = _enemiesInRange[_dist.CheckDistance(targets)];
     }
 
     //whoops

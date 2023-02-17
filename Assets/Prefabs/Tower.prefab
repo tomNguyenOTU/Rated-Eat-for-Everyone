@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6676474863886019678}
   - component: {fileID: -3190718573213754166}
   - component: {fileID: 8398035522293442619}
+  - component: {fileID: 6740535367249428864}
+  - component: {fileID: 7866065080440083865}
   m_Layer: 7
   m_Name: Tower
   m_TagString: Tower
@@ -47,13 +49,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d65da9de462ba441944375fabf60fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  damage: 0
-  cooldown: 0
-  range: 0
+  range: 5
   cost: 0
   buildTimer: []
   width: 2
+  tags: 
+  _enemyTarget: {fileID: 0}
 --- !u!61 &8398035522293442619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -99,6 +100,56 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
+--- !u!58 &6740535367249428864
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839382265085706877}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
+--- !u!114 &7866065080440083865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839382265085706877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef613136cc0b2ab44b47a8f1e5f49ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitPoints: 30
+  atkDamage: 5
+  atkDelay: 1
 --- !u!1 &8370264173264556663
 GameObject:
   m_ObjectHideFlags: 0
