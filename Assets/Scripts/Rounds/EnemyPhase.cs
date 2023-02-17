@@ -7,6 +7,7 @@ public class EnemyPhase : MonoBehaviour
     public PlayerPhase player;
     public Waves waves;
     public GameObject prefab;
+    public float spawnDelay = 3.0f;
 
     public bool enemyPhase = false;
     bool activateSpawn = false;
@@ -28,7 +29,7 @@ public class EnemyPhase : MonoBehaviour
     {
         if (enemyPhase && !waves.routineRun && !activateSpawn)
         {
-            StartCoroutine(waves.spawnWave("", 5.0f, prefab, enemyCount));
+            StartCoroutine(waves.spawnWave("", spawnDelay, prefab, enemyCount));
             activateSpawn = true;
         }
 

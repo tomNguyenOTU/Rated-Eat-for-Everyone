@@ -11,7 +11,7 @@ public enum TowerTags
 public class Tower : MonoBehaviour
 {
     // tower stats
-    public float health;
+    float health;
     float damage;
     float cooldown;
     [SerializeField] private float range;

@@ -121,7 +121,7 @@ public class TowerPlacement : MonoBehaviour
         // no hovered tiles
         if (hit.collider == null)
         {
-            Debug.Log("no collider found at mouse position");
+            //Debug.Log("no collider found at mouse position");
             hoveredTile = null;
             return;
         }
@@ -149,7 +149,7 @@ public class TowerPlacement : MonoBehaviour
         }
 
         Vector3 offset = new Vector3(adjustedOffset, adjustedOffset);
-        Debug.Log($"{baseOffset} / {towerWidth} = {adjustedOffset}");
+        //Debug.Log($"{baseOffset} / {towerWidth} = {adjustedOffset}");
 
         return offset;
     }
@@ -202,12 +202,12 @@ public class TowerPlacement : MonoBehaviour
         {
             if (hit[i].collider != null)
             {
-                Debug.Log("tower in projection location");
+                //Debug.Log("tower in projection location");
                 return true;
             }
         }
 
-        Debug.Log("no tower in projection location");
+        //Debug.Log("no tower in projection location");
         return false;
 
 

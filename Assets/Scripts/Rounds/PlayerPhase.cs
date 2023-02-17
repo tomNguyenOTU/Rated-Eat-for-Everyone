@@ -9,11 +9,8 @@ public class PlayerPhase : MonoBehaviour
 
     // Given time for player phase (seconds)
     public float playerPhaseTime = 180.0f;
-
-    // Current time remaining
-    public float phaseTimer = 0f;
-    float currentTime = 0f;
-    float lastCheck = 0f;
+    public float timeRemain = 0f;
+    float timer = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -26,28 +23,25 @@ public class PlayerPhase : MonoBehaviour
     {
         if (playerPhase)
         {
-            currentTime = Time.time;
-            phaseTimer -= (currentTime - lastCheck);
-            if (phaseTimer <= 0f)
+            timeRemain = (timer - Time.time);
+            if(Time.time > timer)
             {
                 EndPhase();
             }
-            lastCheck = currentTime;
         }
     }
 
     public void StartPhase()
     {
         playerPhase = true;
-        phaseTimer = playerPhaseTime;
-        currentTime = Time.time;
-        lastCheck = currentTime;
+        timer = Time.time + playerPhaseTime;
     }
 
     public void EndPhase()
     {
-        phaseTimer = 0;
         playerPhase= false;
+        timeRemain= 0f;
+        timer= 0f;
         enemy.StartPhase();
     }
 }

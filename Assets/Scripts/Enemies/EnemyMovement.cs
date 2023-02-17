@@ -37,9 +37,14 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (moveObj && collision.gameObject.tag != "Enemy")
+        if (moveObj && !collision.gameObject.CompareTag("Enemy"))
         {
             moveObj= false;
+        }
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
     }
 

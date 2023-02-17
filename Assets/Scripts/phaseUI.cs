@@ -20,7 +20,8 @@ public class phaseUI : MonoBehaviour
     {
         if (player.playerPhase)
         {
-            m_TextMeshProUGUI.text = $"Phase: Player Phase\nTime: {Mathf.Floor(player.phaseTimer)}";
+            //m_TextMeshProUGUI.text = $"Phase: Player Phase\nTime: {Mathf.Floor(player.timeRemain)}";
+            m_TextMeshProUGUI.text = $"Phase: Player Phase\nTime: {Mathf.Floor(player.playerPhaseTime)}";
         }
         if (enemy.enemyPhase)
         {
