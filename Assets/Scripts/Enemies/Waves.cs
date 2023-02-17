@@ -61,4 +61,14 @@ public class Waves : MonoBehaviour
         }
         routineRun = false;
     }
+
+    private void DirectionSpawn(GameObject enemyType, Transform centerTransform, float spawnDistance)
+    {
+        float dir = Random.Range(0f, 2f * Mathf.PI);
+        Vector3 spawnDir = new Vector3 (Mathf.Cos(dir), Mathf.Sin(dir), 0f);
+
+        Vector3 spawnLocation = centerTransform.position + (spawnDir * spawnDistance);
+
+        spawner.Spawn(enemyType, spawnLocation);
+    }
 }
