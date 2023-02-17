@@ -32,7 +32,7 @@ public class TowerUI : MonoBehaviour
     private void Update()
     {
         mouseHeld = Input.GetMouseButton(0);
-        Debug.Log(mouseHeld);
+        //Debug.Log(mouseHeld);
 
         for (int i = 0; i < _towerButtons.Count; i++) 
         {

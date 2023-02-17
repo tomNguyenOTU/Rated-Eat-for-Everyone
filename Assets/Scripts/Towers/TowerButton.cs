@@ -19,13 +19,13 @@ public class TowerButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // there's a event called "OnMouseDrag" but i'll be honest i'm too lazy to read docs rn, if this works it works
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("hovering button");
+        //Debug.Log("hovering button");
         mouseOver = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("not hovering button");
+        //Debug.Log("not hovering button");
         mouseOver = false;
     }
 

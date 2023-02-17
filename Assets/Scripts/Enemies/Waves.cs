@@ -5,6 +5,7 @@ using UnityEngine;
 public class Waves : MonoBehaviour
 {
     public SpawnEnemy spawner;
+    public EnemyPhase enemy;
     public Camera cam;
     public bool routineRun = false;
 
@@ -49,7 +50,7 @@ public class Waves : MonoBehaviour
                 break;
         }
 
-        while (enemyCount > 0)
+        while (enemyCount > 0 && enemy.enemyPhase)
         {
             Vector3 spawnPoint = cam.ScreenToWorldPoint(new Vector3(Random.Range(rangeX_Min, rangeX_Max), Random.Range(rangeY_Min, rangeY_Max), -cam.transform.position.z));
 

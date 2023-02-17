@@ -11,9 +11,9 @@ public enum TowerTags
 public class Tower : MonoBehaviour
 {
     // tower stats
-    [SerializeField] private float health;
-    [SerializeField] private float damage;
-    [SerializeField] private float cooldown;
+    public float health;
+    float damage;
+    float cooldown;
     [SerializeField] private float range;
 
     [SerializeField] private int cost;
@@ -42,6 +42,10 @@ public class Tower : MonoBehaviour
     {
         _trans = GetComponent<Transform>();
         _dist = GetComponent<UtilityDistComparison>();
+
+        health = GetComponent<TowerStats>().hitPoints;
+        damage = GetComponent<TowerStats>().atkDamage;
+        cooldown = GetComponent<TowerStats>().atkDelay;
     }
 
     void Update()

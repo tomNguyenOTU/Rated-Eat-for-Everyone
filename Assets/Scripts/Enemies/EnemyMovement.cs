@@ -7,15 +7,16 @@ public class EnemyMovement : MonoBehaviour
     public GameObject currentTargetObject;
     public GameObject defaultTarget;
     public string defaultTargetName;
-    public float moveSpeed = 1f;
     public bool moveObj = false;
     Rigidbody2D objrigidbody;
+    float moveSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         objrigidbody = GetComponent<Rigidbody2D>();
         defaultTarget = GameObject.Find(defaultTargetName);
+        moveSpeed = GetComponent<EnemyStats>().moveSpeed;
     }
 
     private void Update()

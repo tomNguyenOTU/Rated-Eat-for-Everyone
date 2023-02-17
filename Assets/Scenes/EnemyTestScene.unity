@@ -718,6 +718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 607725213}
+  enemy: {fileID: 1388973224}
   cam: {fileID: 487649502}
   routineRun: 0
 --- !u!1 &849265508
