@@ -101,7 +101,6 @@ public class TowerPlacement : MonoBehaviour
         // check if the projection would be out of bounds
         int tileIndex = _map.GetMapTiles().IndexOf(hoveredTile);
         Vector3 tileCoordinates = _map.GetMapTileCoordinates()[tileIndex];
-        // Debug.Log(tileCoordinates);
 
         tileCoordinates += new Vector3(tower.GetWidth(), tower.GetWidth(), 0);
 
@@ -149,7 +148,6 @@ public class TowerPlacement : MonoBehaviour
         }
 
         Vector3 offset = new Vector3(adjustedOffset, adjustedOffset);
-        //Debug.Log($"{baseOffset} / {towerWidth} = {adjustedOffset}");
 
         return offset;
     }
@@ -202,12 +200,9 @@ public class TowerPlacement : MonoBehaviour
         {
             if (hit[i].collider != null)
             {
-                //Debug.Log("tower in projection location");
                 return true;
             }
         }
-
-        //Debug.Log("no tower in projection location");
         return false;
 
 
@@ -217,12 +212,10 @@ public class TowerPlacement : MonoBehaviour
 
         //if (projectionTouchingTower)
         //{
-        //    Debug.Log("tower in projection location");
         //    return true;
         //}
         //else
         //{
-        //    Debug.Log("no tower in projection location");
         //    return false;
         //}
     }

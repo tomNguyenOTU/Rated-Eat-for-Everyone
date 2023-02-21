@@ -31,7 +31,7 @@ public class UtilityDistComparison : MonoBehaviour
         int index = 0;
         float closestDistance = 50f;
 
-        for(int i = 0; i < compare.Count; i++) 
+        for (int i = 0; i < compare.Count; i++)
         {
             if (CheckDistance(compare[i], closestDistance))
             {
@@ -45,7 +45,7 @@ public class UtilityDistComparison : MonoBehaviour
 
     public List<Transform> CheckDistance(List<Transform> compare, float threshold) // return a list of transforms within a threshold
     {
-        for(int i = compare.Count; i > 0; i--)
+        for (int i = compare.Count; i > 0; i--)
         {
             if (!CheckDistance(compare[i], threshold))
             {
@@ -75,9 +75,9 @@ public class UtilityDistComparison : MonoBehaviour
     {
         List<Transform> ret = new List<Transform>();
 
-        foreach (GameObject g in obj)
+        for (int i = 0; i < obj.Count; i++)
         {
-            ret.Add(g.GetComponent<Transform>());
+            ret.Add(obj[i].GetComponent<Transform>());
         }
 
         return ret;

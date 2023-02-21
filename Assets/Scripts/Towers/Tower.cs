@@ -2,38 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TowerTags
-{
-    Blueberry,
-    Watermelon
-}
-
 public class Tower : MonoBehaviour
 {
-    // tower stats
-    float health;
-    float damage;
-    float cooldown;
-    [SerializeField] private float range;
-
-    [SerializeField] private int cost;
-    [SerializeField] private float[] buildTimer;
-
-    [SerializeField] private int width;
-
-    [SerializeField] private List<TowerTags> tags;
-
     // used as reference
-    private float maxHealth;
-    private float normalCooldown;
-    private float currentBuildTimer;
+    private float health;
+    private float cooldown;
+    private float damage;
+    private float range;
 
     // components of tower
     private Transform _trans;
     private UtilityDistComparison _dist;
+    private CircleCollider2D _rangeTrigger;
+    private TowerStats _stats;
 
     // other
-    private GameObject _enemyTarget;
+    [SerializeField] private GameObject _enemyTarget;
+    List<GameObject> _enemiesInRange = new List<GameObject>();
+    private bool canAttack = true;
 
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
@@ -42,20 +28,43 @@ public class Tower : MonoBehaviour
     {
         _trans = GetComponent<Transform>();
         _dist = GetComponent<UtilityDistComparison>();
+        _stats = GetComponent<TowerStats>();
 
-        health = GetComponent<TowerStats>().hitPoints;
-        damage = GetComponent<TowerStats>().atkDamage;
-        cooldown = GetComponent<TowerStats>().atkDelay;
+        health = _stats.hitPoints;
+        damage = _stats.atkDamage;
+        cooldown = _stats.atkDelay;
+        range = _stats.range;
+
+        _rangeTrigger.radius = _stats.range; // uhhh this one doesn't work fuck i'll fix it later
     }
 
     void Update()
     {
         
     }
-
-    private void Attack()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            _enemiesInRange.Add(collision.gameObject);
+        }
+    }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            _enemiesInRange.Remove(collision.gameObject);
+        }
+    }
+    IEnumerator Attack()
+    {
+        canAttack = false;
+
+        // insert a line here for blueberry turret-specific stuff
+
+        yield return new WaitForSeconds(cooldown);
+        canAttack = true;
     }
 
     //pseudocode for now, uncomment when testing this out or something
@@ -80,19 +89,6 @@ public class Tower : MonoBehaviour
         List<Transform> targets = _dist.ConvertObjToTrans(enemies);
         _enemyTarget = enemies[_dist.CheckDistance(targets)];
     }
-
-    //whoops
-    //checks if the tower can attack:
-    // if the difference between realtime and last attack time is greater than cooldown, then the tower can attack
-    //public bool CanAttack()
-    //{
-    //    if (Time.realtimeSinceStartup - lastAttackTime > cooldown)
-    //    {
-    //        return true;
-    //    }
-
-    //    return false;
-    //}
 
     // helper functions go here
     public float GetHealth()
@@ -119,12 +115,13 @@ public class Tower : MonoBehaviour
     // use these cooldown functions for permanent changes (e.g. upgrades)
     public float GetNormalCooldown()
     {
-        return normalCooldown;
+        // return normalCooldown;
+        return 0f;
     }
 
     public void SetNormalCooldown(float normalCooldown)
     {
-        this.normalCooldown = normalCooldown;
+        // this.normalCooldown = normalCooldown;
     }
 
     public float GetDamage()
@@ -147,11 +144,6 @@ public class Tower : MonoBehaviour
         this.range = range;
     }
 
-    public void SetLastAttack(float time)
-    {
-        // lastAttackTime = time;
-    }
-
     public void UpgradeTower()
     {
         if (upgradeTier != 4)
@@ -160,19 +152,21 @@ public class Tower : MonoBehaviour
         }
     }
 
+    // other
+
     public int GetWidth()
     {
-        return width;
+        return _stats.width;
     }
 
     public List<TowerTags> GetTowerTag()
     {
-        return tags;
+        return _stats.tags;
     }
 
     public bool CheckIfTagsHas(TowerTags tag)
     {
-        if (tags.Contains(tag))
+        if (_stats.tags.Contains(tag))
             return true;
 
         return false;

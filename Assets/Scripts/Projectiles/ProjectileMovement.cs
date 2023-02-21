@@ -41,15 +41,10 @@ public class ProjectileMovement : MonoBehaviour
         if(collision.gameObject.CompareTag("Enemy"))
         {
             GameObject enemy = collision.gameObject;
-            float enemyHP = enemy.GetComponent<TowerStats>().hitPoints;
+            float enemyHP = enemy.GetComponent<EnemyStats>().hitPoints;
             enemyHP -= damage;
+
             Destroy(gameObject);
-            //DEMO ONLY
-            Destroy(enemy);
-            if (enemyHP <= 0)
-            {
-                Destroy(enemy);
-            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TowerAttack : MonoBehaviour
+public class BlueberryAttack : MonoBehaviour
 {
     public GameObject target;
     public Collider2D trig;
