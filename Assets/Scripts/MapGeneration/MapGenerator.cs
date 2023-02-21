@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [ExecuteAlways]
 public class MapGenerator : MonoBehaviour
@@ -13,6 +14,12 @@ public class MapGenerator : MonoBehaviour
     public float mapOffsetX;
     public float mapOffsetY;
 
+    private int currentMapWidth;
+    private int currentMapHeight;
+    private float currentTileWidth;
+    private float currentMapOffsetX;
+    private float currentMapOffsetY;
+
     private Transform _trans;
     private List<GameObject> mapTiles = new List<GameObject>();
     private List<Vector3> mapTileCoordinates = new List<Vector3>();
@@ -23,6 +30,29 @@ public class MapGenerator : MonoBehaviour
 
         CreateMap();
     }
+
+    private void Update()
+    {
+        if (mapWidth != currentMapWidth ||
+            mapHeight != currentMapHeight ||
+            tileWidth != currentTileWidth ||
+            mapOffsetX != currentMapOffsetX ||
+            mapOffsetY != currentMapOffsetY)
+        {
+            for(int i = 0; i < _trans.childCount; i++)
+            {
+                DestroyImmediate(_trans.GetChild(i).gameObject);
+            }
+            mapTiles.Clear();
+            mapTileCoordinates.Clear();
+        }
+
+        if (mapTiles.Count == 0)
+        {
+            CreateMap();
+        }
+    }
+
     private void CreateMap()
     {
         for (int i = 0; i < mapWidth; i++)
