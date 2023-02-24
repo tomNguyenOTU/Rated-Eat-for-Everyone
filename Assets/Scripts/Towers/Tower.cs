@@ -18,8 +18,7 @@ public class Tower : MonoBehaviour
 
     // other
     [SerializeField] private GameObject _enemyTarget;
-    List<GameObject> _enemiesInRange = new List<GameObject>();
-    private bool canAttack = true;
+    public List<GameObject> _enemiesInRange = new List<GameObject>();
 
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
@@ -40,31 +39,7 @@ public class Tower : MonoBehaviour
 
     void Update()
     {
-        
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            _enemiesInRange.Add(collision.gameObject);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            _enemiesInRange.Remove(collision.gameObject);
-        }
-    }
-    IEnumerator Attack()
-    {
-        canAttack = false;
-
-        // insert a line here for blueberry turret-specific stuff
-
-        yield return new WaitForSeconds(cooldown);
-        canAttack = true;
+        UpdateTowerTarget();
     }
 
     //pseudocode for now, uncomment when testing this out or something

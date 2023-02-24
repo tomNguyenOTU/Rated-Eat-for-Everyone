@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -3190718573213754166}
   - component: {fileID: 8398035522293442619}
   - component: {fileID: 332543568532732541}
+  - component: {fileID: -5234929096736571016}
   m_Layer: 7
   m_Name: Tower
   m_TagString: Tower
@@ -54,6 +55,11 @@ MonoBehaviour:
   hitPoints: 35
   atkDamage: 10
   atkDelay: 0.5
+  range: 0
+  cost: 0
+  buildTimer: []
+  width: 0
+  tags: 
 --- !u!114 &-3190718573213754166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,11 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d65da9de462ba441944375fabf60fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
-  cost: 0
-  buildTimer: []
-  width: 2
-  tags: 
+  _enemyTarget: {fileID: 0}
 --- !u!61 &8398035522293442619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -143,6 +145,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-5234929096736571016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839382265085706877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63221685f8aa2bb40b8c4a1465b33580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  trig: {fileID: 0}
+  projPrefab: {fileID: 6390991407950879209, guid: d8c9e55e1c49d7245b0bf56fb30ec1a8, type: 3}
+  projLoc: {fileID: 0}
+  inRange: 0
 --- !u!1 &1580993400470353953
 GameObject:
   m_ObjectHideFlags: 0

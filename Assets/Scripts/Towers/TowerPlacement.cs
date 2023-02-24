@@ -164,9 +164,12 @@ public class TowerPlacement : MonoBehaviour
             towerProjection = Instantiate(towerPrefab, new Vector3(-40, 40, 0), Quaternion.identity, _trans);
 
             // makes the projection not a real tower
-            if (towerProjection.GetComponent<Tower>() != null)
+            foreach (Component comp in towerProjection.GetComponents(typeof(Component)))
             {
-                Destroy(towerProjection.GetComponent<Tower>());
+                if (comp.GetType() != typeof(Transform))
+                {
+                    Destroy(comp);
+                }
             }
         }
         else 

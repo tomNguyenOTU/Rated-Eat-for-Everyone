@@ -46,8 +46,11 @@ public class MapGenerator : MonoBehaviour
             mapTiles.Clear();
             mapTileCoordinates.Clear();
         }
+    }
 
-        if (mapTiles.Count == 0)
+    private void LateUpdate()
+    {
+        if (_trans.childCount == 0)
         {
             CreateMap();
         }
@@ -74,6 +77,12 @@ public class MapGenerator : MonoBehaviour
                 this.mapTileCoordinates.Add(mapTileCoordinates);
             }
         }
+
+        currentMapHeight = mapHeight;
+        currentMapWidth = mapWidth;
+        currentTileWidth = tileWidth;
+        currentMapOffsetX = mapOffsetX;
+        currentMapOffsetY = mapOffsetY;
     }
 
     public List<GameObject> GetMapTiles()

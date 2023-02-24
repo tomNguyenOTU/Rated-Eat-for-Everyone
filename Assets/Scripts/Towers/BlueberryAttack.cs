@@ -7,43 +7,72 @@ using UnityEngine;
 public class BlueberryAttack : MonoBehaviour
 {
     public GameObject target;
-    public Collider2D trig;
     public GameObject projPrefab;
-    public GameObject projLoc;
-    public bool inRange = false;
-    float atkTime = 0f;
-    float atkDamage = 0f;
-    float atkDelay = 0f;
-    Rigidbody2D objrigidbody;
-    GameObject parent;
+
+    Rigidbody2D _rb;
+
+    private bool canAttack = true;
+    private bool? attacking = null;
+    Tower _tower;
+    TowerStats _stats;
 
     // Start is called before the first frame update
     void Start()
     {
-        parent = transform.parent.gameObject;
-        objrigidbody = parent.GetComponent<Rigidbody2D>();
-        atkDamage = parent.GetComponent<TowerStats>().atkDamage;
-        atkDelay = parent.GetComponent<TowerStats>().atkDelay;
+        _rb = GetComponent<Rigidbody2D>();
+        _stats = GetComponent<TowerStats>();
+        _tower = GetComponent<Tower>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         TrackTarget(target);
-        if(inRange)
+
+        if (target == null)
         {
-            Attack(target, atkDamage, atkDelay);
+            _tower.UpdateTowerTarget();
+            attacking = false;
+        }
+        else
+        {
+            TrackTarget(target);
+        }
+
+        if (attacking == true)
+        {
+            StartCoroutine(Attack());
+            attacking = null;
+        }
+        else if (attacking == false) 
+        {
+            StopCoroutine(Attack());
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy" && (target == null))
+        if (collision.gameObject.tag == "Enemy")
         {
-            target = collision.gameObject;
-            inRange = true;
-            atkTime = 0f;
+            _tower._enemiesInRange.Add(collision.gameObject);
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            _tower._enemiesInRange.Remove(collision.gameObject);
+        }
+    }
+    public IEnumerator Attack()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(_stats.atkDelay);
+
+        Instantiate(projPrefab, transform.position, transform.rotation, transform);
+
+        canAttack = true;
     }
 
     void TrackTarget(GameObject target)
@@ -52,22 +81,11 @@ public class BlueberryAttack : MonoBehaviour
 
         Quaternion rotation = Quaternion.LookRotation(lookDirection, Vector3.forward);
 
-        objrigidbody.SetRotation(rotation);
+        _rb.SetRotation(rotation);
     }
 
     public void Spawn(GameObject template, Vector3 spawnPosition)
     {
-        Instantiate(template, spawnPosition, transform.rotation);
-    }
-
-    void Attack(GameObject @object, float damage, float cooldown)
-    {
-        EnemyStats enemy = @object.GetComponent<EnemyStats>();
-
-        if (inRange && (Time.time > atkTime))
-        {
-            atkTime = Time.time + cooldown;
-            Spawn(projPrefab, projLoc.transform.position);
-        }
+        Instantiate(template, spawnPosition, transform.rotation, GetComponent<Transform>());
     }
 }
