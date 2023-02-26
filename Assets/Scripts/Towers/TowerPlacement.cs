@@ -21,47 +21,16 @@ public class TowerPlacement : MonoBehaviour
     private Transform _trans;
 
     private Tower _tower;
+    private TowerStats _stats;
 
     private void Start()
     {
-        _tower = towerPrefab.GetComponent<Tower>();
+        
     }
 
     private void Update()
     {
-        // placeholder testing stuffs i dunno
 
-        // commented out so i can send this to a manager script 
-
-        //if (building)
-        //{
-        //    UpdateHoverTile();
-        //    ProjectTowerForBuilding(_tower);
-
-        //    if (Input.GetMouseButtonUp(0))
-        //    {
-        //        if (hoveredTile != null)
-        //        {
-        //            BuildTower(_tower);
-        //        }
-
-        //        BuildMode(false);
-        //    }
-
-        //    if (Input.GetKeyDown(KeyCode.Escape))
-        //    {
-        //        BuildMode(false);
-        //    }
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    // PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE DON'T BREAK PLEASE
-        //    if (building)
-        //        BuildMode(false);
-        //    else
-        //        BuildMode(true);
-        //}
     }
 
     public Vector2 GetMousePosition()
@@ -79,7 +48,7 @@ public class TowerPlacement : MonoBehaviour
         return Physics2D.Raycast(GetMousePosition() + offset, Vector2.zero, 0.1f, mask, -100f, 100f);
     }
 
-    public void ProjectTowerForBuilding(Tower tower)
+    public void ProjectTowerForBuilding()
     {
         // yes i know shut up this is easier for me to read
 
@@ -102,7 +71,8 @@ public class TowerPlacement : MonoBehaviour
         int tileIndex = _map.GetMapTiles().IndexOf(hoveredTile);
         Vector3 tileCoordinates = _map.GetMapTileCoordinates()[tileIndex];
 
-        tileCoordinates += new Vector3(tower.GetWidth(), tower.GetWidth(), 0);
+        Debug.Log(_stats.width);
+        tileCoordinates += new Vector3(_stats.width - 1, _stats.width - 1, 0);
 
         Vector3 gridDimensions = new Vector3(_map.GetMapWidth(), _map.GetMapHeight(), 0);
 
@@ -110,7 +80,7 @@ public class TowerPlacement : MonoBehaviour
             return;
 
         // update the projection
-        towerProjection.transform.position = hoveredTile.transform.position + ProjectionOffset(tower);
+        towerProjection.transform.position = hoveredTile.transform.position + ProjectionOffset(towerPrefab);
     }
 
     public void UpdateHoverTile()
@@ -131,10 +101,10 @@ public class TowerPlacement : MonoBehaviour
         }
     }
 
-    public Vector3 ProjectionOffset(Tower tower)
+    public Vector3 ProjectionOffset(GameObject prefab)
     {
         float baseOffset = _map.GetTileWidth();
-        int towerWidth = _tower.GetWidth();
+        int towerWidth = prefab.GetComponent<TowerStats>().width;
 
         float adjustedOffset;
 
@@ -166,7 +136,7 @@ public class TowerPlacement : MonoBehaviour
             // makes the projection not a real tower
             foreach (Component comp in towerProjection.GetComponents(typeof(Component)))
             {
-                if (comp.GetType() != typeof(Transform))
+                if (comp.GetType() != typeof(Transform) && comp.GetType() != typeof(TowerStats))
                 {
                     Destroy(comp);
                 }
@@ -179,10 +149,10 @@ public class TowerPlacement : MonoBehaviour
         }
     }
 
-    public bool CheckForTower(Tower tower)
+    public bool CheckForTowerAtProjection()
     {
         float tileWidth = _map.GetTileWidth();
-        int towerWidth = tower.GetWidth();
+        int towerWidth = _stats.width;
 
         float baseOffset = tileWidth * (towerWidth - 1);
 
@@ -223,7 +193,7 @@ public class TowerPlacement : MonoBehaviour
         //}
     }
 
-    public void BuildTower(Tower tower)
+    public void BuildTower()
     {
         // if in build mode, hovering over a tile, and there is no tower
         if (!building)
@@ -232,7 +202,7 @@ public class TowerPlacement : MonoBehaviour
         if (hoveredTile == null)
             return;
 
-        if (CheckForTower(tower))
+        if (CheckForTowerAtProjection())
             return;
 
         // build the tower
@@ -251,5 +221,19 @@ public class TowerPlacement : MonoBehaviour
     public Tower GetTower()
     {
         return _tower;
+    }
+
+    public void SetTowerComponents(GameObject towerPrefab)
+    {
+        this.towerPrefab = towerPrefab;
+        _tower = towerPrefab.GetComponent<Tower>();
+        _stats = towerPrefab.GetComponent<TowerStats>();
+    }
+
+    public void ResetTowerComponents()
+    {
+        towerPrefab = null;
+        _tower = null;
+        _stats = null;
     }
 }

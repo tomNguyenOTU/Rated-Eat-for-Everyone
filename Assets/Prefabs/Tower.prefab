@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 839382265085706877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 11.5}
+  m_LocalScale: {x: 0.67, y: 0.67, z: 11.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9116297806009334826}
@@ -58,7 +58,7 @@ MonoBehaviour:
   range: 0
   cost: 0
   buildTimer: []
-  width: 0
+  width: 2
   tags: 
 --- !u!114 &-3190718573213754166
 MonoBehaviour:
@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyTarget: {fileID: 0}
+  _enemiesInRange: []
 --- !u!61 &8398035522293442619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -158,10 +159,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  trig: {fileID: 0}
+  _rb: {fileID: 0}
+  _tower: {fileID: 0}
+  _stats: {fileID: 0}
+  _dist: {fileID: 0}
+  enemiesInRange: []
   projPrefab: {fileID: 6390991407950879209, guid: d8c9e55e1c49d7245b0bf56fb30ec1a8, type: 3}
-  projLoc: {fileID: 0}
-  inRange: 0
+  projSpawnLocation: {fileID: 1580993400470353953}
 --- !u!1 &1580993400470353953
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,10 +278,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  trig: {fileID: 4749969160259580324}
+  _rb: {fileID: 0}
+  _tower: {fileID: 0}
+  _stats: {fileID: 0}
+  _dist: {fileID: 0}
+  enemiesInRange: []
   projPrefab: {fileID: 6390991407950879209, guid: d8c9e55e1c49d7245b0bf56fb30ec1a8, type: 3}
-  projLoc: {fileID: 1580993400470353953}
-  inRange: 0
+  projSpawnLocation: {fileID: 0}
 --- !u!1 &8370264173264556663
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,6 +43,25 @@ public class UtilityDistComparison : MonoBehaviour
         return index;
     }
 
+    public int CheckDistance(List<GameObject> compare) // return index of closest gameobject
+    {
+        int index = 0;
+        float closestDistance = 50f;
+
+        List<Transform> temp = ConvertObjToTrans(compare);
+
+        for (int i = 0; i < compare.Count; i++)
+        {
+            if (CheckDistance(temp[i], closestDistance))
+            {
+                closestDistance = CheckDistance(temp[i]);
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
     public List<Transform> CheckDistance(List<Transform> compare, float threshold) // return a list of transforms within a threshold
     {
         for (int i = compare.Count; i > 0; i--)
@@ -82,4 +101,6 @@ public class UtilityDistComparison : MonoBehaviour
 
         return ret;
     }
+
+    // other notes: change return types? some of this seems really fucked up
 }

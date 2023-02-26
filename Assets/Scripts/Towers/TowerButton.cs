@@ -11,6 +11,8 @@ public class TowerButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private bool mouseOver;
     private Button _button;
 
+    public GameObject _towerPrefab;
+
     private void Start()
     {
         _button = GetComponent<Button>();

@@ -18,14 +18,4 @@ public class TowerStats : MonoBehaviour
     public float[] buildTimer;
     public int width;
     public List<TowerTags> tags;
-
-    public float GetAtkDamage()
-    { 
-        return atkDamage;
-    }
-
-    public float GetAtkDelay()
-    {
-        return atkDelay;
-    }
 }

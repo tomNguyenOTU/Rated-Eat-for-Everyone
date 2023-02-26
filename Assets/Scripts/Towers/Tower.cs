@@ -19,6 +19,8 @@ public class Tower : MonoBehaviour
     // other
     [SerializeField] private GameObject _enemyTarget;
     public List<GameObject> _enemiesInRange = new List<GameObject>();
+    // PLEASE REMOVE THESE LATER
+
 
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;

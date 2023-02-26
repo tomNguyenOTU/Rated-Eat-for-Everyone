@@ -45,18 +45,21 @@ public class TowerUI : MonoBehaviour
 
         if (buttonDragged != -1 && !_towerButtons[buttonDragged].GetMouseOver())
         {
+            if (_towerPlace.towerPrefab == null)
+                _towerPlace.SetTowerComponents(_towerButtons[buttonDragged]._towerPrefab);
+
             if (mouseHeld)
             {
                 _towerPlace.BuildMode(true);
                 _towerPlace.UpdateHoverTile();
-                _towerPlace.ProjectTowerForBuilding(_towerPlace.GetTower());
+                _towerPlace.ProjectTowerForBuilding();
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                _towerPlace.BuildTower(_towerPlace.GetTower());
+                _towerPlace.BuildTower();
                 _towerPlace.BuildMode(false);
-
+                _towerPlace.ResetTowerComponents();
                 buttonDragged = -1;
             }
         }
