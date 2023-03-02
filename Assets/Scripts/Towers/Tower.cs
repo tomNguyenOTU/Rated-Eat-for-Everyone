@@ -16,12 +16,6 @@ public class Tower : MonoBehaviour
     private CircleCollider2D _rangeTrigger;
     private TowerStats _stats;
 
-    // other
-    [SerializeField] private GameObject _enemyTarget;
-    public List<GameObject> _enemiesInRange = new List<GameObject>();
-    // PLEASE REMOVE THESE LATER
-
-
     // private float lastAttackTime = Time.realtimeSinceStartup;
     private int upgradeTier = 0;
 
@@ -36,35 +30,12 @@ public class Tower : MonoBehaviour
         cooldown = _stats.atkDelay;
         range = _stats.range;
 
-        _rangeTrigger.radius = _stats.range; // uhhh this one doesn't work fuck i'll fix it later
+        // _rangeTrigger.radius = _stats.range; // uhhh this one doesn't work fuck i'll fix it later
     }
 
     void Update()
     {
-        UpdateTowerTarget();
-    }
-
-    //pseudocode for now, uncomment when testing this out or something
-    public void UpdateTowerTarget()
-    {
-        List<GameObject> enemies = new List<GameObject>(); // grab a list of enemies from a manager script somewhere; this line is a placeholder
-
-        //selfnote for later: consider this solution for tags: https://answers.unity.com/questions/1470694/multiple-tags-for-one-gameobject.html
-    
-        enemies = _dist.CheckDistance(enemies, range); // remove all enemies not in range
-
-        if (enemies.Count == 0)
-        {
-            _enemyTarget = null;
-            return;
-        }
-
-        List<GameObject> temp = new List<GameObject>();
-
-        // (this should be the last thing checked, but i need to pass this onto luc because i need enemy class stuff later)
-        // find closest enemy to tower
-        List<Transform> targets = _dist.ConvertObjToTrans(enemies);
-        _enemyTarget = enemies[_dist.CheckDistance(targets)];
+        
     }
 
     // helper functions go here

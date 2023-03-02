@@ -14,6 +14,7 @@ public class TowerUI : MonoBehaviour
     public Canvas _canvas;
     public List<GameObject> _buttons = new List<GameObject>();
     public List<TowerButton> _towerButtons = new List<TowerButton>();
+    public PlayerPhase _playerPhase;
 
     private int playerMoney;
 
@@ -31,6 +32,12 @@ public class TowerUI : MonoBehaviour
 
     private void Update()
     {
+        if (!_playerPhase.playerPhase) // maybe change this later?
+        {
+            return;
+        }
+
+
         mouseHeld = Input.GetMouseButton(0);
         //Debug.Log(mouseHeld);
 
@@ -39,14 +46,13 @@ public class TowerUI : MonoBehaviour
             if (mouseHeld && _towerButtons[i].GetMouseOver())
             {
                 buttonDragged = i;
-                i = _towerButtons.Count; // end loop
+                break;
             }
         }
 
         if (buttonDragged != -1 && !_towerButtons[buttonDragged].GetMouseOver())
         {
-            if (_towerPlace.towerPrefab == null)
-                _towerPlace.SetTowerComponents(_towerButtons[buttonDragged]._towerPrefab);
+            _towerPlace.SetTowerComponents(_towerButtons[buttonDragged]._towerPrefab);
 
             if (mouseHeld)
             {
@@ -65,8 +71,6 @@ public class TowerUI : MonoBehaviour
         }
 
     }
-
-
 
     // click and drag:
     // player clicks button

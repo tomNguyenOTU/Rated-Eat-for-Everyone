@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class TowerPlacement : MonoBehaviour
 {
-    public GameObject towerPrefab;
-    public GameObject towerProjection;
     public LayerMask gridMask;
     public LayerMask towerMask;
 
@@ -20,8 +18,10 @@ public class TowerPlacement : MonoBehaviour
 
     private Transform _trans;
 
-    private Tower _tower;
-    private TowerStats _stats;
+    GameObject towerPrefab;
+    GameObject towerProjection;
+    Tower _tower;
+    TowerStats _stats;
 
     private void Start()
     {
@@ -133,13 +133,10 @@ public class TowerPlacement : MonoBehaviour
         {
             towerProjection = Instantiate(towerPrefab, new Vector3(-40, 40, 0), Quaternion.identity, _trans);
 
-            // makes the projection not a real tower
-            foreach (Component comp in towerProjection.GetComponents(typeof(Component)))
+            var comp = towerProjection.GetComponent<Attack>();
+            if (comp != null)
             {
-                if (comp.GetType() != typeof(Transform) && comp.GetType() != typeof(TowerStats))
-                {
-                    Destroy(comp);
-                }
+                Destroy(comp);
             }
         }
         else 
