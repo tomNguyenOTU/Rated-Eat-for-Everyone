@@ -12,6 +12,7 @@ public class ProjectileMovement : MonoBehaviour
 
     void Start()
     {
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         damage = parentTower.GetComponent<TowerStats>().atkDamage;
     }
 

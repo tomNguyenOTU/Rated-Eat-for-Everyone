@@ -17,8 +17,7 @@ public class BlueberryAttack : Attack
         {
             UpdateTarget();
         }
-
-        if (target.GetComponent<EnemyStats>().GetHitPoints() <= 0)
+        else if (target.GetComponent<EnemyStats>().GetHitPoints() <= 0)
         {
             target = null;
         }
@@ -34,10 +33,16 @@ public class BlueberryAttack : Attack
         {
             yield break;
         }
+        else
+        {
+            StartCoroutine(AttackLoop());
+        }
     }
 
     public void Shoot()
     {
+        TrackTarget(target);
+
         Instantiate(projPrefab, projSpawnLocation.transform.position, transform.rotation, GetComponent<Transform>());
     }
 }

@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _stats = GetComponent<TowerStats>();
         _tower = GetComponent<Tower>();
-        _dist = GetComponent<UtilityDistComparison>();
+        _dist = GameObject.Find("Utility").GetComponent<UtilityDistComparison>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
