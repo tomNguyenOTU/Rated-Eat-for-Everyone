@@ -15,14 +15,6 @@ public class Attack : MonoBehaviour
 
     private void Start() // why the fuck am i not allowed to use a contructor here :(
     {
-        TryGetComponent<Tower>(out _tower);
-
-        if (_tower == null)
-        {
-            Destroy(gameObject.GetComponent<Attack>());
-            return;
-        }
-
         _rb = GetComponent<Rigidbody2D>();
         _stats = GetComponent<TowerStats>();
         _tower = GetComponent<Tower>();
@@ -51,6 +43,7 @@ public class Attack : MonoBehaviour
 
         if (target == null)
         {
+            enemiesInRange.Remove(target);
             yield break;
         }
     }
@@ -60,11 +53,11 @@ public class Attack : MonoBehaviour
         // default: targets closest, then starts to attack
         // (i should actually tweak this later)
 
-        if (enemiesInRange.Count > 0)
-        {
-            target = enemiesInRange[_dist.CheckDistance(enemiesInRange)]; // need to rewrite
-            StartCoroutine(AttackLoop());
-        }
+        if (enemiesInRange.Count == 0)
+            return;
+
+        target = enemiesInRange[_dist.CheckDistance(enemiesInRange)]; // need to rewrite
+        StartCoroutine(AttackLoop());
     }
 
     public void TrackTarget(GameObject target)

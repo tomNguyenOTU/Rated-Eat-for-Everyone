@@ -33,6 +33,9 @@ public class MapGenerator : MonoBehaviour
 
     private void Update()
     {
+        if (Application.isPlaying)
+            return;
+
         if (mapWidth != currentMapWidth ||
             mapHeight != currentMapHeight ||
             tileWidth != currentTileWidth ||
@@ -46,10 +49,7 @@ public class MapGenerator : MonoBehaviour
             mapTiles.Clear();
             mapTileCoordinates.Clear();
         }
-    }
 
-    private void LateUpdate()
-    {
         if (_trans.childCount == 0)
         {
             CreateMap();
