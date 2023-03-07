@@ -72,8 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d65da9de462ba441944375fabf60fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyTarget: {fileID: 0}
-  _enemiesInRange: []
 --- !u!61 &8398035522293442619
 BoxCollider2D:
   m_ObjectHideFlags: 0

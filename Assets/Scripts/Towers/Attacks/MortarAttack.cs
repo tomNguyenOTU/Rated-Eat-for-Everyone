@@ -46,7 +46,7 @@ public class MortarAttack : Attack
         GameObject mark = Instantiate(targetMarker, target.transform.position, Quaternion.identity, transform);
         GameObject attack = Instantiate(attackProjectile, transform.position, Quaternion.identity, transform);
 
-        attack.Init(mark.transform.position, _stats.speed); // access projectile script
+        // attack.Init(mark.transform.position, _stats.speed); // access projectile script
     }
 
     public void IgnoreCloseEnemies()

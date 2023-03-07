@@ -33,8 +33,6 @@ public class BlueberryAttack : Attack
 
     public void Spawn()
     {
-        TrackTarget(target);
-
-        Instantiate(projPrefab, projSpawnLocation.transform.position, projPrefab.transform.rotation);
+        Instantiate(projPrefab, projSpawnLocation.transform.position, TrackTarget(target));
     }
 }

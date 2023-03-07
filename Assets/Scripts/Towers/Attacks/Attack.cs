@@ -63,13 +63,15 @@ public class Attack : MonoBehaviour
         StartCoroutine(AttackLoop());
     }
 
-    public void TrackTarget(GameObject target)
+    public Quaternion TrackTarget(GameObject target)
     {
         Vector2 lookDirection = target.transform.position - transform.position;
 
         Quaternion rotation = Quaternion.LookRotation(lookDirection, Vector3.forward);
 
         _rb.SetRotation(rotation);
+
+        return rotation;
     }
 
     public void RemoveResetTarget()
