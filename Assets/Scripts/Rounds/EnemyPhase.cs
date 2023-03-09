@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class EnemyPhase : MonoBehaviour
 {
-    public PlayerPhase player;
-    public Waves waves;
-    public GameObject prefab;
-    public float spawnDelay = 3.0f;
+    FLOW_CONTROLLER flow;
+
+    [SerializeField] Waves waves;
+    [SerializeField] GameObject prefab;
+
+    [SerializeField] float spawnDelay = 3.0f;
 
     public bool enemyPhase = false;
     bool activateSpawn = false;
-
-    // Num of enemies spawned during wave (total)
-    public int enemyCount;
 
     // Remaining active enemies
     int liveEnemyCount = 0;
@@ -21,7 +20,7 @@ public class EnemyPhase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        flow = GetComponent<FLOW_CONTROLLER>();
     }
 
     // Update is called once per frame
@@ -29,7 +28,7 @@ public class EnemyPhase : MonoBehaviour
     {
         if (enemyPhase && !waves.routineRun && !activateSpawn)
         {
-            StartCoroutine(waves.spawnWave("", spawnDelay, prefab, enemyCount));
+            StartCoroutine(waves.spawnWave(flow.currentWaveInfo, spawnDelay));
             activateSpawn = true;
         }
 
@@ -47,17 +46,11 @@ public class EnemyPhase : MonoBehaviour
         enemyPhase = true;
     }
 
-    public void StartPhase(int waveLeng)
-    {
-        enemyCount = waveLeng;
-        enemyPhase = true;
-    }
-
     public void EndPhase()
     {
         enemyPhase = false;
         liveEnemyCount = 0;
-        player.StartPhase();
+        flow.EndPhase();
     }
 
     public void KillPhase()

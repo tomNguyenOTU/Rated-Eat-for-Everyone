@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerPhase : MonoBehaviour
 {
-    public EnemyPhase enemy;
+    FLOW_CONTROLLER flow;
+
     public bool playerPhase = false;
 
     // Given time for player phase (seconds)
@@ -15,7 +16,7 @@ public class PlayerPhase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        flow = GetComponent<FLOW_CONTROLLER>();
     }
 
     // Update is called once per frame
@@ -42,6 +43,6 @@ public class PlayerPhase : MonoBehaviour
         playerPhase= false;
         timeRemain= 0f;
         timer= 0f;
-        enemy.StartPhase();
+        flow.EndPhase();
     }
 }

@@ -25,7 +25,7 @@ public class phaseUI : MonoBehaviour
         }
         if (enemy.enemyPhase)
         {
-            m_TextMeshProUGUI.text = $"Phase: Enemy Phase\nEnemies: {enemy.enemyCount}";
+            //m_TextMeshProUGUI.text = $"Phase: Enemy Phase\nEnemies: {}";
         }
     }
 

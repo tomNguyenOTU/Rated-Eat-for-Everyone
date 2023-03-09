@@ -4,71 +4,90 @@ using UnityEngine;
 
 public class Waves : MonoBehaviour
 {
-    public SpawnEnemy spawner;
-    public EnemyPhase enemy;
-    public Camera cam;
+    [SerializeField] EnemyPhase enemy;
+    [SerializeField] Camera cam;
+    [SerializeField] GameObject spawnCenter;
+    [SerializeField] float spawnDist;
+
     public bool routineRun = false;
 
-    private List<GameObject> enemies = new List<GameObject>();
+    public Dictionary<int, Dictionary<int, getWaveInfo.Enemy>> waveInfo;
 
-    public IEnumerator spawnWave(string spawnDirection, float spawnCooldown, GameObject enemyType, int enemyCount)
+    private void Start()
+    {
+        /* Get information from all "Waves" objects.
+         * 
+         * Information is saved in a Dictionary with the format: [Wave Number, Wave Dictionary],
+         * Where [Wave Dictionary] has information on each individual enemy type:
+         * 
+         *      [Wave Dictionary] = [Enemy Index, Enemy Info]
+         *      
+         *      Such that:
+         *      
+         *          [Enemy Info] = 
+         *          {
+         *              GameObject type;
+         *              int quantity;
+         *          }
+         *          
+         *      Enemy Info is a struct with variables for an enemies type - which prefab will be used to spawn,
+         *      And quantity - how many enemies of this type are spawned.
+         *      
+         *      Enemies are spawned in the order they appear.
+         *      Once all enemies of one type are spawned, 
+         *      The next group is automatically spawned until all types have been spawned as many times as indicated in [quantity]
+         *      
+         *      EX: Type A, Quantity 10,
+         *          Type B, Quantity 5
+         *          
+         *          First, 10 objects of Type A are spawned,
+         *          Then, 5 objects of Type B are spawned.
+         */
+
+        GameObject[] waves = GameObject.FindGameObjectsWithTag("Waves");
+        for (int waveIndex = 0; waveIndex < waves.Length; waveIndex++)
+        {
+            Dictionary<int, getWaveInfo.Enemy> wave = GameObject.Find("Wave" + (waveIndex + 1)).GetComponent<getWaveInfo>().keyValuePairs;
+            waveInfo.Add(waveIndex, wave);
+        }
+    }
+
+    public IEnumerator spawnWave(Dictionary<int, getWaveInfo.Enemy> waveDict, float secondsDelay)
     {
         routineRun = true;
-        float rangeX_Min = 0f;
-        float rangeY_Min = 0f;
-        float rangeX_Max = 0f;
-        float rangeY_Max = 0f;
+        
+        int objsInitialized = 0;
+        int totalObjs = 0;
 
-        switch (spawnDirection)
+        for (int i = 0; i < waveDict.Count; i++)
         {
-            case "Left":
-                rangeX_Min = -150f;
-                rangeX_Max = -50f;
-                rangeY_Min = 0f;
-                rangeY_Max = cam.pixelHeight;
-                break;
-
-            case "Right":
-                rangeX_Min = cam.pixelWidth + 150f;
-                rangeX_Max = cam.pixelWidth + 50f;
-                rangeY_Min = 0f;
-                rangeY_Max = cam.pixelHeight;
-                break;
-
-            case "Up":
-                rangeX_Min = cam.pixelWidth;
-                rangeX_Max = 0f;
-                rangeY_Min = -50f;
-                rangeY_Max = -150;
-                break;
-
-            default:
-                rangeX_Min = cam.pixelWidth;
-                rangeX_Max = 0f;
-                rangeY_Min = cam.pixelHeight + 50f;
-                rangeY_Max = cam.pixelHeight + 150f;
-                break;
+            totalObjs += waveDict[i].quantity;
         }
 
-        while (enemyCount > 0 && enemy.enemyPhase)
+        while (objsInitialized < totalObjs)
         {
-            Vector3 spawnPoint = cam.ScreenToWorldPoint(new Vector3(Random.Range(rangeX_Min, rangeX_Max), Random.Range(rangeY_Min, rangeY_Max), -cam.transform.position.z));
+            for (int j = 0; j < waveDict.Count; j++)
+            {
+                for (int k = 0; k < waveDict[j].quantity; k++)
+                {
+                    Vector3 loc = GetSpawnLocation(spawnCenter.transform, spawnDist);
 
-            spawner.Spawn(enemyType, spawnPoint);
-            enemyCount--;
+                    Instantiate(waveDict[j].type, loc, Quaternion.identity);
 
-            yield return new WaitForSeconds(spawnCooldown);
+                    objsInitialized++;
+                    yield return new WaitForSeconds(secondsDelay);
+                }
+            }
         }
+
         routineRun = false;
     }
 
-    private void DirectionSpawn(GameObject enemyType, Transform centerTransform, float spawnDistance)
+    private Vector3 GetSpawnLocation(Transform centerTransform, float spawnDistance)
     {
         float dir = Random.Range(0f, 2f * Mathf.PI);
-        Vector3 spawnDir = new Vector3 (Mathf.Cos(dir), Mathf.Sin(dir), 0f);
-
-        Vector3 spawnLocation = centerTransform.position + (spawnDir * spawnDistance);
-
-        spawner.Spawn(enemyType, spawnLocation);
+        Vector3 spawnDirection = new Vector3 (Mathf.Cos(dir), Mathf.Sin(dir), 0f);
+        Vector3 spawnLocation = centerTransform.position + (spawnDirection * spawnDistance);
+        return spawnLocation;
     }
 }
