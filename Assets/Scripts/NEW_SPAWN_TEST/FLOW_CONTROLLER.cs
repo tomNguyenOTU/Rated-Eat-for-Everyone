@@ -12,7 +12,7 @@ public class FLOW_CONTROLLER : MonoBehaviour
 
     // Track Win State
     int maxWave;
-    int currentWave = 0;
+    public int currentWave = 0;
 
     // 0 == Player, 1 == Enemy
     int currentPhase;
@@ -23,6 +23,8 @@ public class FLOW_CONTROLLER : MonoBehaviour
         player_phase = GetComponent<PlayerPhase>();
         enemy_phase = GetComponent<EnemyPhase>();
         waves = GetComponent<Waves>();
+
+        currentWaveInfo = new Dictionary<int, getWaveInfo.Enemy>();
 
         maxWave = waves.waveInfo.Count;
 

@@ -28,7 +28,7 @@ public class EnemyPhase : MonoBehaviour
     {
         if (enemyPhase && !waves.routineRun && !activateSpawn)
         {
-            StartCoroutine(waves.spawnWave(flow.currentWaveInfo, spawnDelay));
+            StartCoroutine(waves.spawnWave(waves.waveInfo[flow.currentWave], spawnDelay));
             activateSpawn = true;
         }
 
