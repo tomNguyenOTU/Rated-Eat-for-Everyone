@@ -34,7 +34,7 @@ public class EnemyPhase : MonoBehaviour
 
         liveEnemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
-        if (liveEnemyCount == 0 && !waves.routineRun)
+        if ( enemyPhase && liveEnemyCount == 0 && !waves.routineRun)
         {
             activateSpawn = false;
             EndPhase();

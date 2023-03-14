@@ -25,7 +25,10 @@ public class PlayerPhase : MonoBehaviour
         if (playerPhase)
         {
             timeRemain = (timer - Time.time);
-            // end phase
+            if (timeRemain <= 0f )
+            {
+                EndPhase();
+            }
         }
     }
 
