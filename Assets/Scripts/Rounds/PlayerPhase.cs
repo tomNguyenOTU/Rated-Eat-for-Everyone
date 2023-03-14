@@ -9,7 +9,7 @@ public class PlayerPhase : MonoBehaviour
     public bool playerPhase = false;
 
     // Given time for player phase (seconds)
-    public float playerPhaseTime = 180.0f;
+    public float playerPhaseTime = 90.0f;
     public float timeRemain = 0f;
     float timer = 0f;
 
@@ -25,10 +25,7 @@ public class PlayerPhase : MonoBehaviour
         if (playerPhase)
         {
             timeRemain = (timer - Time.time);
-            if(Time.time > timer)
-            {
-                EndPhase();
-            }
+            // end phase
         }
     }
 
